@@ -1,0 +1,63 @@
+{
+  "name": "reacting",
+  "version": "0.0.1",
+  "description": "dashboards with FB react in the style of dashing",
+  "main": "src/reacting.coffee",
+  "directories": {
+    "test": "test",
+    "src": "src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dobrite/reacting.git"
+  },
+  "keywords": [
+    "dashboard",
+    "react",
+    "dashing"
+  ],
+  "author": "Dave O",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dobrite/reacting/issues"
+  },
+  "dependencies": {
+    "coffee-script": "*",
+    "react": "~0.10"
+  },
+  "devDependencies": {
+    "gulp": "~3.6.0",
+    "gulp-notify": "~1.2.4",
+    "gulp-livereload": "~1.2.0",
+    "browserify": "~3.36.0",
+    "envify": "~1.2.0",
+    "reactify": "~0.4.0",
+    "statics": "~0.1.0",
+    "uglify-js": "~2.4.13",
+    "watchify": "~0.4.1",
+    "coffee-reactify": "~> 0.1.2",
+    "vinyl-source-stream": "~0.1.1",
+    "jest-cli": "~0.1.15",
+    "jasmine-expect": "~1.21.0"
+  },
+  "scripts": {
+    "start": "STATIC_ROOT=./static watchify -o js/bundle.js -v -d .",
+    "build": "STATIC_ROOT=./static NODE_ENV=production browserify . | uglifyjs -cm > js/bundle.min.js",
+    "collect-static": "collect-static . ./static",
+    "test": "jest"
+  },
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify",
+      "coffee-reactify"
+    ]
+  },
+  "jest": {
+    "scriptPreprocessor": "preprocessor.js",
+    "testFileExtensions": [
+      "coffee",
+      "js"
+    ]
+  }
+}
