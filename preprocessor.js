@@ -1,11 +1,11 @@
-// preprocessor.js
+var ReactTools = require('react-tools');
 var coffee = require('coffee-script');
 
 module.exports = {
   process: function(src, path) {
     if (path.match(/\.coffee$/)) {
-      return coffee.compile(src, {'bare': true});
+      src = coffee.compile(src, {'bare': true});
     }
-    return src;
+    return ReactTools.transform(src);
   }
 };

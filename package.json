@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "coffee-script": "*",
-    "react": "~0.10"
+    "react": "~0.10",
+    "react-tools": "*"
   },
   "devDependencies": {
     "gulp": "~3.6.0",
@@ -54,7 +55,10 @@
     ]
   },
   "jest": {
-    "scriptPreprocessor": "preprocessor.js",
+    "scriptPreprocessor": "<rootDir>/preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ],
     "testFileExtensions": [
       "coffee",
       "js"
