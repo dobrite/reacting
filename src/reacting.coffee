@@ -25,6 +25,21 @@ class Reacting
 #  else
 #    num
 
+Reacting.RecursiveValue = (animatedProps) ->
+
+  componentWillReceiveProps: (nextProps) ->
+    console.log "R", nextProps
+    @setProps current: 55
+
+  componentWillUpdate: (nextProps) ->
+    console.log "U", nextProps
+    return if nextProps.current == 70
+
+    int = setInterval =>
+      clearInterval int
+      @setProps current: nextProps.current + 1
+    , 10
+
 Reacting.AnimatedValue = Reacting.AnimatedValues = (animatedProps) ->
   type = Object::toString.call(animatedProps)
   if type isnt "[object Object]"
