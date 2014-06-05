@@ -26,18 +26,30 @@ class Reacting
 #    num
 
 Reacting.RecursiveValue = (animatedProps) ->
-
-  componentWillReceiveProps: (nextProps) ->
-    console.log "R", nextProps
-    @setProps current: 55
+  shouldComponentUpdate: (nextProps) ->
+    console.log "should ", nextProps
+    if nextProps._to == undefined
+      console.log @props.current
+      [nextProps.current, nextProps._to] = [@props.current, nextProps.current]
+      console.log nextProps
+      @setProps nextProps
+      false
+    else
+      true
 
   componentWillUpdate: (nextProps) ->
-    console.log "U", nextProps
-    return if nextProps.current == 70
+    console.log "U", @props, nextProps
+    return if nextProps.current == 20
 
     int = setInterval =>
       clearInterval int
-      @setProps current: nextProps.current + 1
+      if @props._to == @props.current
+        return
+      else
+        props = {}
+        props["current"] = @props.current + 1
+        props._to = if @props._to == undefined then nextProps.current else @props._to
+        @setProps props
     , 10
 
 Reacting.AnimatedValue = Reacting.AnimatedValues = (animatedProps) ->

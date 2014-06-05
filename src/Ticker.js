@@ -4,12 +4,13 @@ var React = require('react/addons');
 var Reacting = require('reacting');
 
 var Ticker = React.createClass({
-  mixins: Reacting.RecursiveValue('current'),
-
+  mixins: [
+    Reacting.RecursiveValue('current')
+  ],
 
   getDefaultProps: function () {
     return {
-      current: "0"
+      current: 0
     };
   },
 
