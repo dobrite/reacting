@@ -45,4 +45,12 @@ describe('Ticker', function () {
     expect(setProps).toBeCalled();
     expect(setProps.mock.calls.length).toBe(1);
   });
+  describe('shouldComponentUpdate') {
+    it('returns false if @props.key equals @props._to') {
+    }
+    it('returns false if nextProps._to is undefined') {
+    }
+    it('calls @setProps if nextProps._to is undefined') {
+    }
+  }
 });
