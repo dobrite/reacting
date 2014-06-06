@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
 var React = require('react/addons');
-var Reacting = require('reacting');
+var Reacting = require('./reacting.coffee');
 
 var Ticker = React.createClass({
   mixins: [
-    Reacting.RecursiveValue('current')
+    Reacting.AnimatedValue('current')
   ],
 
   getDefaultProps: function () {
@@ -15,7 +15,6 @@ var Ticker = React.createClass({
   },
 
   render: function () {
-    console.log("--", this.props.current, "--");
     return (
       <div>{this.props.current}</div>
     );

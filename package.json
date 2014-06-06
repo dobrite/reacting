@@ -24,10 +24,11 @@
   "dependencies": {
     "coffee-script": "*",
     "react": "~0.10",
-    "react-tools": "*"
+    "react-tools": "*",
+    "operators": "~0.1.4"
   },
   "devDependencies": {
-    "gulp": "~3.6.0",
+    "gulp": "~3.7.0",
     "gulp-notify": "~1.2.4",
     "gulp-livereload": "~1.2.0",
     "browserify": "~3.36.0",
@@ -36,7 +37,7 @@
     "statics": "~0.1.0",
     "uglify-js": "~2.4.13",
     "watchify": "~0.4.1",
-    "coffee-reactify": "~> 0.1.2",
+    "coffee-reactify": "~0.1.2",
     "vinyl-source-stream": "~0.1.1",
     "jest-cli": "~0.1.15",
     "jasmine-expect": "~1.21.0"

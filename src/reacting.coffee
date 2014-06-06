@@ -1,3 +1,5 @@
+op = require './utils.coffee'
+
 class Reacting
   @widgets = {}
   @components = {}
@@ -25,25 +27,37 @@ class Reacting
 #  else
 #    num
 
-Reacting.RecursiveValue = (animatedProps) ->
+Reacting.AnimatedValue = (animatedProps) ->
   shouldComponentUpdate: (nextProps) ->
-    if @props.current == @props._to
-      return false
     if nextProps._to == undefined
-      [nextProps.current, nextProps._to] = [@props.current, nextProps.current]
-      @setProps nextProps
-      return false
-    return true
+      @setProps @_setupAnimationProps nextProps
+      false
+    else
+      true
 
   componentWillUpdate: (nextProps) ->
     int = setInterval =>
       clearInterval int
-      props = {}
-      props["current"] = @props.current + 1
-      @setProps props
+      if nextProps.current != nextProps._to
+        nextProps.current = @_advanceAnimation(nextProps.current, nextProps._to, nextProps._step, nextProps._func, nextProps._comp)
+        @setProps nextProps
     , 10
 
-Reacting.AnimatedValue = Reacting.AnimatedValues = (animatedProps) ->
+  _advanceAnimation: (value, to, step, func, comp) ->
+    comp(func(value + step), to)
+
+  _setupAnimationProps: (nextProps) ->
+    nextProps._to = nextProps.current
+
+    up = nextProps._to > @props.current
+    nextProps._comp = if up then Math.min else Math.max
+    nextProps._func = if up then Math.ceil else Math.floor
+
+    nextProps.current = @props.current
+    nextProps._step = (nextProps._to - nextProps.current) / 90
+    nextProps
+
+Reacting.Old = (animatedProps) ->
   type = Object::toString.call(animatedProps)
   if type isnt "[object Object]"
     if type isnt "[object Array]"
