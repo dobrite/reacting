@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
-var React = require('react/addons');
-var Reacting = require('./reacting.coffee');
+var React = require('react');
+var AnimatedValueMixin = require('./animated-value-mixin.coffee');
 
 var AnimatedValue = React.createClass({
   mixins: [
-    Reacting.AnimatedValue('current')
+    AnimatedValueMixin('current')
   ],
 
   getDefaultProps: function () {
