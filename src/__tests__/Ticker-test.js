@@ -174,12 +174,12 @@ describe('Ticker', function () {
       expect(value).toEqual(-1);
     });
 
-    it('incrs by 1 even if step is < 1', function () {
+    it('incrs by 1 even if step is between 0 and 1', function () {
       var value = domTicker._advanceAnimation(0, 10, 0.3333, Math.ceil, Math.min);
       expect(value).toEqual(1);
     });
 
-    it('floors _step if going down', function () {
+    it('decrs by 1 even if step is between 0 and -1', function () {
       var value = domTicker._advanceAnimation(0, -10, -0.3333, Math.floor, Math.max);
       expect(value).toEqual(-1);
     });
