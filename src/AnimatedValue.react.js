@@ -3,7 +3,7 @@
 var React = require('react/addons');
 var Reacting = require('./reacting.coffee');
 
-var Ticker = React.createClass({
+var AnimatedValue = React.createClass({
   mixins: [
     Reacting.AnimatedValue('current')
   ],
@@ -21,4 +21,4 @@ var Ticker = React.createClass({
   }
 });
 
-module.exports = Ticker;
+module.exports = AnimatedValue;

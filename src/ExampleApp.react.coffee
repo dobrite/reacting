@@ -1,16 +1,16 @@
 # @cjsx React.DOM
 React = require 'react'
-Ticker = require './Ticker.js'
+AnimatedValue = require './AnimatedValue.react.js'
 
-upTicker = React.renderComponent(
-  <Ticker />,
+up = React.renderComponent(
+  <AnimatedValue />,
   document.getElementById 'up'
 )
 
-downTicker = React.renderComponent(
-  <Ticker />,
+down = React.renderComponent(
+  <AnimatedValue />,
   document.getElementById 'down'
 )
 
-upTicker.setProps   current: 10000
-downTicker.setProps current: -10000
+up.setProps   current: 10000
+down.setProps current: -10000
