@@ -24,8 +24,7 @@
   "dependencies": {
     "coffee-script": "*",
     "react": "~0.10",
-    "react-tools": "*",
-    "operators": "~0.1.4"
+    "react-tools": "*"
   },
   "devDependencies": {
     "gulp": "~3.7.0",

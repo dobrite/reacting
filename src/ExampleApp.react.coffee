@@ -1,14 +1,14 @@
 # @cjsx React.DOM
 React = require 'react'
-AnimatedValue = require './AnimatedValue.react.js'
+AnimatedProp = require './AnimatedProp.react.js'
 
 up = React.renderComponent(
-  <AnimatedValue />,
+  <AnimatedProp />,
   document.getElementById 'up'
 )
 
 down = React.renderComponent(
-  <AnimatedValue />,
+  <AnimatedProp />,
   document.getElementById 'down'
 )
 
