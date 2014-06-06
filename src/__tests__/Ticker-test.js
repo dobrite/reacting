@@ -6,23 +6,19 @@ jest.dontMock('../utils.coffee');
 
 describe('AnimatedValue', function () {
 
-  var React, AnimatedValue, TestUtils;
+  var React, AnimatedValue, TestUtils, animatedValue, domAnimatedValue, op;
 
   beforeEach(function () {
+    op = require('../utils.coffee');
     React = require('react/addons');
     AnimatedValue = require('../AnimatedValue.react.js');
     TestUtils = React.addons.TestUtils;
+    animatedValue = <AnimatedValue />;
+    TestUtils.renderIntoDocument(animatedValue);
+    domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
   });
 
   describe('basic functionality', function () {
-
-    var animatedValue, domAnimatedValue;
-
-    beforeEach(function () {
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
 
     it('state defaults to 0 when initialized', function () {
       expect(domAnimatedValue.getDOMNode().textContent).toEqual("0");
@@ -38,14 +34,6 @@ describe('AnimatedValue', function () {
   });
 
   describe('#shouldComponentUpdate', function () {
-
-    var animatedValue, domAnimatedValue;
-
-    beforeEach(function () {
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
 
     it('returns false if new value is equal to current', function () {
       expect(domAnimatedValue.shouldComponentUpdate({current: 10})).toEqual(false);
@@ -74,14 +62,6 @@ describe('AnimatedValue', function () {
 
   describe('#componentWillUpdate', function () {
 
-    var animatedValue, domAnimatedValue;
-
-    beforeEach(function () {
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
-
     it('calls setProps with _to value set to current', function () {
       //TODO remove or rewrite this to test componentWillUdpate
       //domAnimatedValue.setProps({current: 90});
@@ -101,15 +81,6 @@ describe('AnimatedValue', function () {
   });
 
   describe('#_setupAnimationProps', function () {
-
-    var animatedValue, domAnimatedValue;
-
-    beforeEach(function () {
-      op = require('../utils.coffee');
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
 
     it('set _to to current', function () {
       var nextProps = domAnimatedValue._setupAnimationProps({current: 10});
@@ -155,15 +126,6 @@ describe('AnimatedValue', function () {
 
   describe('#_advanceAnimation', function () {
 
-    var animatedValue, domAnimatedValue, op
-
-    beforeEach(function () {
-      op = require('../utils.coffee');
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
-
     it('increases value by step if going up', function () {
       var value = domAnimatedValue._advanceAnimation(0, 10, 1, Math.ceil, Math.min);
       expect(value).toEqual(1);
@@ -187,14 +149,6 @@ describe('AnimatedValue', function () {
   });
 
   describe('integration', function () {
-
-    var animatedValue, domAnimatedValue;
-
-    beforeEach(function () {
-      animatedValue = <AnimatedValue />;
-      TestUtils.renderIntoDocument(animatedValue);
-      domAnimatedValue = TestUtils.findRenderedComponentWithType(animatedValue, AnimatedValue);
-    });
 
     it('finishes on current for a positive value', function () {
       domAnimatedValue.setProps({current: 90});
