@@ -27,29 +27,20 @@ class Reacting
 
 Reacting.RecursiveValue = (animatedProps) ->
   shouldComponentUpdate: (nextProps) ->
-    console.log "should ", nextProps
+    if @props.current == @props._to
+      return false
     if nextProps._to == undefined
-      console.log @props.current
       [nextProps.current, nextProps._to] = [@props.current, nextProps.current]
-      console.log nextProps
       @setProps nextProps
-      false
-    else
-      true
+      return false
+    return true
 
   componentWillUpdate: (nextProps) ->
-    console.log "U", @props, nextProps
-    return if nextProps.current == 20
-
     int = setInterval =>
       clearInterval int
-      if @props._to == @props.current
-        return
-      else
-        props = {}
-        props["current"] = @props.current + 1
-        props._to = if @props._to == undefined then nextProps.current else @props._to
-        @setProps props
+      props = {}
+      props["current"] = @props.current + 1
+      @setProps props
     , 10
 
 Reacting.AnimatedValue = Reacting.AnimatedValues = (animatedProps) ->

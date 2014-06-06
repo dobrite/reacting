@@ -1,56 +1,91 @@
 /** @jsx React.DOM */
+
 jest.dontMock('../Ticker.js');
 jest.dontMock('../reacting.coffee');
+
 describe('Ticker', function () {
-  it('state defaults to 0 when initialized', function () {
-    var React = require('react/addons');
-    var Ticker = require('../Ticker');
-    var TestUtils = React.addons.TestUtils;
 
-    var ticker = <Ticker />;
-    TestUtils.renderIntoDocument(ticker);
+  var React, Ticker, TestUtils;
 
-    var domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
-    expect(domTicker.getDOMNode().textContent).toEqual("0");
+  beforeEach(function () {
+    React = require('react/addons');
+    Ticker = require('../Ticker');
+    TestUtils = React.addons.TestUtils;
   });
 
-  it('displays current when passed in', function () {
-    var React = require('react/addons');
-    var Ticker = require('../Ticker');
-    var TestUtils = React.addons.TestUtils;
+  describe('basic functionality', function () {
 
-    var ticker = <Ticker current={10} />;
-    TestUtils.renderIntoDocument(ticker);
+    var ticker, domTicker;
 
-    var domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
-    expect(domTicker.getDOMNode().textContent).toEqual("10");
+    beforeEach(function () {
+      ticker = <Ticker />;
+      TestUtils.renderIntoDocument(ticker);
+      domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
+    });
+
+    it('state defaults to 0 when initialized', function () {
+      expect(domTicker.getDOMNode().textContent).toEqual("0");
+    });
+
+    it('displays current when passed in', function () {
+      ticker = <Ticker current={10} />;
+      TestUtils.renderIntoDocument(ticker);
+      domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
+      expect(domTicker.getDOMNode().textContent).toEqual("10");
+    });
+
   });
 
-  it.only('calls setProps with _to value set to current', function () {
-    var React = require('react/addons');
-    var Ticker = require('../Ticker');
-    var TestUtils = React.addons.TestUtils;
+  describe('#shouldComponentUpdate', function () {
 
-    var ticker = <Ticker />;
-    TestUtils.renderIntoDocument(ticker);
+    var ticker, domTicker;
 
-    var domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
-    domTicker.setProps({current: 10});
+    beforeEach(function () {
+      ticker = <Ticker />;
+      TestUtils.renderIntoDocument(ticker);
+      domTicker = TestUtils.findRenderedComponentWithType(ticker, Ticker);
+    });
 
-    //domTicker.setProps = setProps = jest.genMockFunction();
+    it('returns false if new value is equal to current', function () {
+      expect(domTicker.shouldComponentUpdate({current: 10})).toEqual(false);
+    });
 
-    //jest.runOnlyPendingTimers();
-    jest.runAllTimers();
+    it('returns false on the first call', function () {
+      expect(domTicker.shouldComponentUpdate({current: 3})).toEqual(false);
+    });
 
-    expect(setProps).toBeCalled();
-    expect(setProps.mock.calls.length).toBe(1);
+    it('calls @setProps if nextProps._to is undefined', function () {
+      var setProps= jest.genMockFunction();
+      domTicker.setProps = setProps;
+      domTicker.shouldComponentUpdate({current: 3})
+      expect(setProps).toBeCalled();
+    });
+
+    it('returns false if nextProps._to is undefined', function () {
+      expect(domTicker.shouldComponentUpdate({current: 3})).toEqual(false);
+    });
+
+    it('returns true otherwise', function () {
+      expect(domTicker.shouldComponentUpdate({current: 3, _to: 4})).toEqual(true);
+    });
+
   });
-  describe('shouldComponentUpdate') {
-    it('returns false if @props.key equals @props._to') {
-    }
-    it('returns false if nextProps._to is undefined') {
-    }
-    it('calls @setProps if nextProps._to is undefined') {
-    }
-  }
+
+  describe('#componentWillUpdate', function () {
+
+    it('calls setProps with _to value set to current', function () {
+      domTicker.setProps({current: 10});
+
+      var setProps = jest.genMockFunction();
+      domTicker.setProps = setProps;
+
+      jest.runOnlyPendingTimers();
+
+      expect(setProps).toBeCalled();
+      expect(setProps.mock.calls.length).toBe(1);
+      expect(setProps.mock.calls[0][0]._to).toBe(10);
+    });
+
+  });
+
 });
