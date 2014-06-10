@@ -38,8 +38,7 @@
     "watchify": "~0.4.1",
     "coffee-reactify": "~0.1.2",
     "vinyl-source-stream": "~0.1.1",
-    "jest-cli": "~0.1.15",
-    "jasmine-expect": "~1.21.0"
+    "jest-cli": "~0.1.15"
   },
   "scripts": {
     "start": "STATIC_ROOT=./static watchify -o js/bundle.js -v -d .",

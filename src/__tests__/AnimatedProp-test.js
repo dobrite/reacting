@@ -63,19 +63,15 @@ describe('AnimatedProp', function () {
   describe('#componentWillUpdate', function () {
 
     it('calls setProps with _to value set to current', function () {
-      //TODO remove or rewrite this to test componentWillUdpate
-      //domAnimatedProp.setProps({current: 90});
-      //var ogSetProps = domAnimatedProp.setProps;
-      //var setProps = jest.genMockFunction();
+      domAnimatedProp.setProps = setProps = jest.genMockFunction();
+      var should = domAnimatedProp.shouldComponentUpdate({current: 90});
+      expect(should).toEqual(false);
+      expect(setProps).toBeCalled();
+    });
 
-      //domAnimatedProp.setProps = setProps;
-
-      //jest.runAllTimers();
-
-      //expect(setProps).toBeCalled();
-      //expect(setProps.mock.calls.length).toBe(1);
-      //console.log(setProps.mock.calls[1][0]);
-      //expect(setProps.mock.calls[1][0]).toBe(90);
+    it('second time through it should', function () {
+      var should = domAnimatedProp.shouldComponentUpdate({current: 90, advance: 'something'});
+      expect(should).toEqual(true);
     });
 
   });
@@ -87,6 +83,10 @@ describe('AnimatedProp', function () {
       expect(ad.current).toEqual(0);
     });
 
+    it('creates an advance function', function () {
+      var ad = domAnimatedProp._setupAnimationData(0, 90);
+      expect(typeof(ad.advance)).toEqual("function");
+    });
   });
 
   describe('animationData', function () {
