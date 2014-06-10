@@ -55,7 +55,7 @@ describe('AnimatedProp', function () {
     });
 
     it('returns true otherwise', function () {
-      expect(domAnimatedProp.shouldComponentUpdate({current: 3, _to: 4})).toEqual(true);
+      expect(domAnimatedProp.shouldComponentUpdate({current: 3, to: 4})).toEqual(true);
     });
 
   });
@@ -82,92 +82,48 @@ describe('AnimatedProp', function () {
 
   describe('#_setupAnimationData', function () {
 
-    it.only('set _to to current', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: 10});
-      expect(nextProps.to).toEqual(10);
+    it('sets to to current', function () {
+      var ad = domAnimatedProp._setupAnimationData(0, 10);
+      expect(ad.to).toEqual(10);
     });
 
-    it('sets _step positive if going up', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: 10});
-      expect(nextProps.step).toBeGreaterThan(0);
+    it('sets step positive if going up', function () {
+      var ad = domAnimatedProp._setupAnimationData(0, 10);
+      expect(ad.step).toBeGreaterThan(0);
     });
 
-    it('sets _step negative if going down', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: -10});
-      expect(nextProps.step).toBeLessThan(0);
+    it('sets step negative if going down', function () {
+      var ad = domAnimatedProp._setupAnimationData(0, -10);
+      expect(ad.step).toBeLessThan(0);
     });
 
     it('current is set to initial', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
-      expect(nextProps.current).toEqual(0);
-    });
-
-    it('_func is set to Math.ceil if animating up', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
-      expect(nextProps.func).toEqual(Math.ceil);
-    });
-
-    it('_func is set to Math.floor if animating down', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: -90});
-      expect(nextProps.func).toEqual(Math.floor);
-    });
-
-    it('_comp is set to Math.min if animating up', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
-      expect(nextProps.comp).toEqual(Math.min);
-    });
-
-    it('_comp is set to Math.max if animating down', function () {
-      var nextProps = domAnimatedProp._setupAnimationData({current: -90});
-      expect(nextProps.comp).toEqual(Math.max);
+      var ad = domAnimatedProp._setupAnimationData(0, 90);
+      expect(ad.current).toEqual(0);
     });
 
   });
 
-  describe('#_advanceAnimation', function () {
+  describe('animationData', function () {
 
     it('increases value by step if going up', function () {
-      var value = domAnimatedProp._advanceAnimation({
-        current: 0,
-        _to: 10,
-        _step: 1,
-        _func: Math.ceil,
-        _comp: Math.min,
-      });
-      expect(value).toEqual(1);
+      var ad = domAnimatedProp._setupAnimationData(0, 10);
+      expect(ad.advance()).toEqual(1);
     });
 
     it('decreases value by step if going down', function () {
-      var value = domAnimatedProp._advanceAnimation({
-        current: 0,
-        _to: -10,
-        _step: -1,
-        _func: Math.floor,
-        _comp: Math.max,
-      });
-      expect(value).toEqual(-1);
+      var ad = domAnimatedProp._setupAnimationData(0, -10);
+      expect(ad.advance()).toEqual(-1);
     });
 
     it('incrs by 1 even if step is between 0 and 1', function () {
-      var value = domAnimatedProp._advanceAnimation({
-        current: 0,
-        _to: 10,
-        _step: 0.3333,
-        _func: Math.ceil,
-        _comp: Math.min,
-      });
-      expect(value).toEqual(1);
+      var ad = domAnimatedProp._setupAnimationData(0, 10);
+      expect(ad.advance()).toEqual(1);
     });
 
     it('decrs by 1 even if step is between 0 and -1', function () {
-      var value = domAnimatedProp._advanceAnimation({
-        current: 0,
-        _to: -10,
-        _step: -0.3333,
-        _func: Math.floor,
-        _comp: Math.max,
-      });
-      expect(value).toEqual(-1);
+      var ad = domAnimatedProp._setupAnimationData(0, -10);
+      expect(ad.advance()).toEqual(-1);
     });
 
   });

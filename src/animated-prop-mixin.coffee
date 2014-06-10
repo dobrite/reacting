@@ -1,18 +1,20 @@
 animationData = (current, to) ->
-  up = to > current
+  up   = to > current
+  comp = if up then Math.min else Math.max
+  func = if up then Math.ceil else Math.floor
 
   to: to
-  comp: if up then Math.min else Math.max
-  func: if up then Math.ceil else Math.floor
   current: current
   step: (to - current) / 90
+  advance: ->
+    comp(func(@current + @step), @to)
 
 AnimatedPropMixin = (animatedProp) ->
   animatedProp = animatedProp || 'value'
 
   shouldComponentUpdate: (nextProps) ->
     if nextProps.to == undefined
-      @setProps @_setupAnimationData nextProps
+      @setProps @_setupAnimationData @props[animatedProp], nextProps[animatedProp]
       false
     else
       true
@@ -21,15 +23,11 @@ AnimatedPropMixin = (animatedProp) ->
     int = setInterval =>
       clearInterval int
       if nextProps[animatedProp] != nextProps.to
-        nextProps.current = @_advanceAnimation nextProps
+        nextProps.current = nextProps.advance()
         @setProps nextProps
     , 10
 
-  _advanceAnimation: (nextProps) ->
-    nextProps.comp(nextProps.func(nextProps[animatedProp] + nextProps.step), nextProps.to)
-
-  _setupAnimationData: (nextProps) ->
-    animationData(@props[animatedProp], nextProps[animatedProp])
-
+  _setupAnimationData: (current, to) ->
+    animationData current, to
 
 module.exports = AnimatedPropMixin
