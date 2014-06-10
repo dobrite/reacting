@@ -80,46 +80,46 @@ describe('AnimatedProp', function () {
 
   });
 
-  describe('#_setupAnimationProps', function () {
+  describe('#_setupAnimationData', function () {
 
-    it('set _to to current', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: 10});
-      expect(nextProps._to).toEqual(10);
+    it.only('set _to to current', function () {
+      var nextProps = domAnimatedProp._setupAnimationData({current: 10});
+      expect(nextProps.to).toEqual(10);
     });
 
     it('sets _step positive if going up', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: 10});
-      expect(nextProps._step).toBeGreaterThan(0);
+      var nextProps = domAnimatedProp._setupAnimationData({current: 10});
+      expect(nextProps.step).toBeGreaterThan(0);
     });
 
     it('sets _step negative if going down', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: -10});
-      expect(nextProps._step).toBeLessThan(0);
+      var nextProps = domAnimatedProp._setupAnimationData({current: -10});
+      expect(nextProps.step).toBeLessThan(0);
     });
 
     it('current is set to initial', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: 90});
+      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
       expect(nextProps.current).toEqual(0);
     });
 
     it('_func is set to Math.ceil if animating up', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: 90});
-      expect(nextProps._func).toEqual(Math.ceil);
+      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
+      expect(nextProps.func).toEqual(Math.ceil);
     });
 
     it('_func is set to Math.floor if animating down', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: -90});
-      expect(nextProps._func).toEqual(Math.floor);
+      var nextProps = domAnimatedProp._setupAnimationData({current: -90});
+      expect(nextProps.func).toEqual(Math.floor);
     });
 
     it('_comp is set to Math.min if animating up', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: 90});
-      expect(nextProps._comp).toEqual(Math.min);
+      var nextProps = domAnimatedProp._setupAnimationData({current: 90});
+      expect(nextProps.comp).toEqual(Math.min);
     });
 
     it('_comp is set to Math.max if animating down', function () {
-      var nextProps = domAnimatedProp._setupAnimationProps({current: -90});
-      expect(nextProps._comp).toEqual(Math.max);
+      var nextProps = domAnimatedProp._setupAnimationData({current: -90});
+      expect(nextProps.comp).toEqual(Math.max);
     });
 
   });
