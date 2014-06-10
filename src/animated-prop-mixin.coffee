@@ -2,19 +2,18 @@ animationData = (current, to) ->
   up   = to > current
   comp = if up then Math.min else Math.max
   func = if up then Math.ceil else Math.floor
+  step = (to - current) / 90
 
-  to: to
   current: current
-  step: (to - current) / 90
-  advance: ->
-    comp(func(@current + @step), @to)
+  advance: (np) ->
+    comp(func(np.current + step), to)
 
 AnimatedPropMixin = (animatedProp) ->
   animatedProp = animatedProp || 'value'
 
   shouldComponentUpdate: (nextProps) ->
-    if nextProps.to == undefined
-      @setProps @_setupAnimationData @props[animatedProp], nextProps[animatedProp]
+    if nextProps.advance == undefined
+      @setProps animationData @props[animatedProp], nextProps[animatedProp]
       false
     else
       true
@@ -22,11 +21,15 @@ AnimatedPropMixin = (animatedProp) ->
   componentWillUpdate: (nextProps) ->
     int = setInterval =>
       clearInterval int
-      if nextProps[animatedProp] != nextProps.to
-        nextProps.current = nextProps.advance()
+      next = nextProps.advance(nextProps)
+      if nextProps.current != next
+        nextProps.current = next
         @setProps nextProps
     , 10
 
+  ##
+  # Really only for testing
+  ##
   _setupAnimationData: (current, to) ->
     animationData current, to
 
