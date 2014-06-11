@@ -55,12 +55,10 @@ describe('AnimatedProp', function () {
       expect(setProps).toBeCalled();
     });
 
-    it('returns true otherwise', function () {
+    it.only('returns true otherwise', function () {
       props = {
-        current: {
-          current: 3,
-          advance: function () {},
-        }
+        current: 3,
+        "current-advance": function () {},
       }
       expect(domAnimatedProp.shouldComponentUpdate(props)).toEqual(true);
     });
@@ -86,37 +84,29 @@ describe('AnimatedProp', function () {
 
   describe('#_setupAnimationData', function () {
 
-    it('current is set to initial', function () {
+    it('creates a function', function () {
       var ad = domAnimatedProp._setupAnimationData(0, 90);
-      expect(ad.current).toEqual(0);
+      expect(typeof(ad)).toEqual("function");
     });
-
-    it('creates an advance function', function () {
-      var ad = domAnimatedProp._setupAnimationData(0, 90);
-      expect(typeof(ad.advance)).toEqual("function");
-    });
-  });
-
-  describe('animationData', function () {
 
     it('increases value by step if going up', function () {
       var ad = domAnimatedProp._setupAnimationData(0, 10);
-      expect(ad.advance(ad)).toEqual(1);
+      expect(ad(0)).toEqual(1);
     });
 
     it('decreases value by step if going down', function () {
       var ad = domAnimatedProp._setupAnimationData(0, -10);
-      expect(ad.advance(ad)).toEqual(-1);
+      expect(ad(0)).toEqual(-1);
     });
 
     it('incrs by 1 even if step is between 0 and 1', function () {
       var ad = domAnimatedProp._setupAnimationData(0, 10);
-      expect(ad.advance(ad)).toEqual(1);
+      expect(ad(0)).toEqual(1);
     });
 
     it('decrs by 1 even if step is between 0 and -1', function () {
       var ad = domAnimatedProp._setupAnimationData(0, -10);
-      expect(ad.advance(ad)).toEqual(-1);
+      expect(ad(0)).toEqual(-1);
     });
 
   });
