@@ -55,7 +55,7 @@ describe('AnimatedProp', function () {
       expect(setProps).toBeCalled();
     });
 
-    it.only('returns true otherwise', function () {
+    it('returns true otherwise', function () {
       props = {
         current: 3,
         "current-advance": function () {},
