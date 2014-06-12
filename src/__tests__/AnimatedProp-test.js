@@ -35,46 +35,35 @@ describe('AnimatedProp', function () {
 
   describe('#shouldComponentUpdate', function () {
 
-    it('returns false if new value is equal to current', function () {
-      expect(domAnimatedProp.shouldComponentUpdate({current: 10})).toEqual(false);
+    it('returns false if updateAt changed', function () {
+      domAnimatedProp.props = {updatedAt: 2}
+      expect(domAnimatedProp.shouldComponentUpdate({updatedAt: 1})).toEqual(false);
     });
 
-    it('returns false on the first call', function () {
-      expect(domAnimatedProp.shouldComponentUpdate({current: 3})).toEqual(false);
+    it('returns true if updateAt is the same', function () {
+      domAnimatedProp.props = {updatedAt: 1}
+      expect(domAnimatedProp.shouldComponentUpdate({updatedAt: 1})).toEqual(true);
     });
 
-    it('calls @setProps if nextProps._to is undefined', function () {
-      var setProps= jest.genMockFunction();
+    it('calls @setProps if updatedAt changed', function () {
+      var setProps = jest.genMockFunction();
       domAnimatedProp.setProps = setProps;
-      domAnimatedProp.shouldComponentUpdate({current: 3})
+      domAnimatedProp.props = {updatedAt: 2}
+      domAnimatedProp.shouldComponentUpdate({updatedAt: 1})
       expect(setProps).toBeCalled();
     });
 
-    it('returns false if nextProps._to is undefined', function () {
-      expect(domAnimatedProp.shouldComponentUpdate({current: 3})).toEqual(false);
-    });
-
-    it('returns true otherwise', function () {
-      expect(domAnimatedProp.shouldComponentUpdate({current: 3, advance: function () {}})).toEqual(true);
+    it('does not call @setProps if updatedAt did not change', function () {
+      var setProps = jest.genMockFunction();
+      domAnimatedProp.setProps = setProps;
+      domAnimatedProp.props = {updatedAt: 1}
+      domAnimatedProp.shouldComponentUpdate({updatedAt: 1})
+      expect(setProps).not.toBeCalled();
     });
 
   });
 
-  describe('#componentWillUpdate', function () {
-
-    it('calls setProps with _to value set to current', function () {
-      domAnimatedProp.setProps = setProps = jest.genMockFunction();
-      var should = domAnimatedProp.shouldComponentUpdate({current: 90});
-      expect(should).toEqual(false);
-      expect(setProps).toBeCalled();
-    });
-
-    it('second time through it should', function () {
-      var should = domAnimatedProp.shouldComponentUpdate({current: 90, advance: 'something'});
-      expect(should).toEqual(true);
-    });
-
-  });
+  //TODO write componentWillUpdate
 
   describe('#_setupAnimationData', function () {
 
