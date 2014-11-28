@@ -26,13 +26,14 @@
     "object-assign": "^1.0.0"
   },
   "devDependencies": {
-    "webpack": "~1.4.11",
-    "jsx-loader": "~0.12.1",
     "css-loader": "~0.9.0",
-    "es6-loader": "~0.2.0"
+    "es6-loader": "~0.2.0",
+    "jsx-loader": "~0.12.1",
+    "webpack": "~1.4.11",
+    "webpack-dev-server": "^1.6.6"
   },
   "scripts": {
-    "start": "webpack --watch --colors --progress",
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --colors",
     "test": "jest"
   }
 }
