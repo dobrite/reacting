@@ -9,11 +9,11 @@ module.exports = {
     filename: 'js/bundle.js'
   },
   plugins: [
-    new ReactStylePlugin('bundle.css')
+    new ReactStylePlugin('css/bundle.css')
   ],
   module: {
     loaders: [
-      { test: /\.js$/, loaders: [ReactStylePlugin.loader(), 'jsx-loader?harmony'] }
+      { test: /\.js$/, loaders: [ReactStylePlugin.loader(), 'es6-loader', 'jsx-loader?harmony'] }
     ]
   },
   devServer: {

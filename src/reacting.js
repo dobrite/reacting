@@ -1,10 +1,10 @@
 var React = require('react/addons');
 var ReactStyle = require('react-style');
 
-var DragDropMixin = require('react-dnd').DragDropMixin;
-var ItemTypes = require('./ItemTypes');
+import { DragDropMixin } from 'react-dnd';
+import ItemTypes from './ItemTypes';
 
-var brick = ReactStyle({
+var brickStyles = ReactStyle({
   width: 50,
   height: 50,
   backgroundColor: 'red'
@@ -13,7 +13,7 @@ var brick = ReactStyle({
 var Brick = React.createClass({
   mixins: [DragDropMixin],
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       brick: {
         text: '&nbsp;',
@@ -22,34 +22,33 @@ var Brick = React.createClass({
     };
   },
 
-  configureDragDrop: function(registerType) {
+  configureDragDrop(registerType) {
     registerType(ItemTypes.BRICK, {
       dragSource: {
-        canDrag: function() {
+        canDrag() {
           return !!this.props.brick;
         },
-        beginDrag: function() {
+        beginDrag() {
           return {
             item: this.props.brick,
           };
         }
       },
       dropTarget: {
-        acceptDrop: function(brick) {
+        acceptDrop(brick) {
           console.log(brick);
         }
       }
     });
   },
 
-  render: function() {
+  render() {
     var dynamicStyles = ReactStyle({color: this.props.color});
-        //styles={[brick, dynamicStyles]}>
     return (
-      <div {...this.dropTargetFor(ItemTypes.BRICK)}>
+      <div {...this.dropTargetFor(ItemTypes.BRICK)}
+        styles={[brickStyles, dynamicStyles]}>
           {this.props.brick &&
             <div {...this.dragSourceFor(ItemTypes.BRICK)}
-              className='brick'
               children={this.props.brick.text}/>
           }
       </div>
@@ -63,12 +62,14 @@ var brick = {
 
 ReactStyle.inject();
 
-React.render(
-  <Brick brick={brick} />,
-  document.getElementById('b1')
-);
+if (typeof document !== 'undefined') {
+  React.render(
+    <Brick brick={brick} />,
+    document.getElementById('b1')
+  );
 
-React.render(
-  <Brick />,
-  document.getElementById('b2')
-);
+  React.render(
+    <Brick />,
+    document.getElementById('b2')
+  );
+}
