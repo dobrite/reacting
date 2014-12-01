@@ -1,14 +1,19 @@
+var path = require('path');
+var ReactStylePlugin = require('react-style-webpack-plugin');
+
 module.exports = {
   entry: './src/reacting.js',
   context: __dirname,
   output: {
-    path: __dirname + '/public/',
+    path: path.join(__dirname, '/public/'),
     filename: 'js/bundle.js'
   },
+  plugins: [
+    new ReactStylePlugin('bundle.css')
+  ],
   module: {
     loaders: [
-      { test: /\.scss$/, loader: 'style!css!sass?outputStyle=expanded' },
-      { test: /\.js$/, loader: 'es6-loader!jsx-loader?harmony' }
+      { test: /\.js$/, loaders: [ReactStylePlugin.loader(), 'jsx-loader?harmony'] }
     ]
   },
   devServer: {

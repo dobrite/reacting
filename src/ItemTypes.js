@@ -2,4 +2,4 @@ var ItemTypes = {
   BRICK: 'brick',
 };
 
-export default ItemTypes;
+module.exports = ItemTypes;
