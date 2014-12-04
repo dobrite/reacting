@@ -16,7 +16,7 @@ var Brick = React.createClass({
   getDefaultProps() {
     return {
       brick: {
-        text: '&nbsp;',
+        text: '\u00a0',
       },
       color: 'yellow'
     };
