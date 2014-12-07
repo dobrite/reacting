@@ -62,6 +62,7 @@ var brick = {
 
 ReactStyle.inject();
 
+// for ReactStyle
 if (typeof document !== 'undefined') {
   React.render(
     <Brick brick={brick} />,
